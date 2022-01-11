@@ -67,15 +67,40 @@ export default function App() {
     <>
       {!loggedUser &&
         <View style={styles.container}>
-          <ImageBackground source={Background} resizeMode="cover" style={styles.image}>
+          <ImageBackground 
+            source={Background} 
+            resizeMode="cover" 
+            style={styles.image}
+          >
             <Image source={{uri: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/2e5ddbc3-0cff-4d7a-8b3f-fcf7d31d44b8/de8gxq1-30fe66bd-f833-4429-9599-ab91dbd0a0c5.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzJlNWRkYmMzLTBjZmYtNGQ3YS04YjNmLWZjZjdkMzFkNDRiOFwvZGU4Z3hxMS0zMGZlNjZiZC1mODMzLTQ0MjktOTU5OS1hYjkxZGJkMGEwYzUucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.GUsTSElwyqtHgCP8UxIF7V-vYgiz8xH7-ee86RLfqxc'}} style={styles.logo} />
-            <Text style={styles.text}>Bem vindo ao Bakko!</Text>
-            <TextInput style={styles.input} placeholder='Digite seu e-mail' placeholderTextColor={Cores.white} onChangeText={(inputEmail) => setEmail(inputEmail)} value={email} />
-            <TextInput secureTextEntry={true} style={styles.input} placeholder='Digite sua senha' placeholderTextColor={Cores.white} onChangeText={(inputPassword) => setPassword(inputPassword)}  value={password} />
-            <TouchableOpacity style={styles.primaryButton} onPress={() => { loginFirebase() }} >
+            <Text style={styles.text}> Bem vindo ao Bakko! </Text>
+            
+            <TextInput 
+              style={styles.input} 
+              placeholder='Digite seu e-mail' 
+              placeholderTextColor={Cores.white} 
+              onChangeText={(inputEmail) => setEmail(inputEmail)} value={email} 
+            />
+            <TextInput 
+              secureTextEntry={true} 
+              style={styles.input} 
+              placeholder='Digite sua senha' 
+              placeholderTextColor={Cores.white} 
+              onChangeText={(inputPassword) => setPassword(inputPassword)}  
+              value={password} 
+            />
+            
+            <TouchableOpacity 
+              style={styles.primaryButton} 
+              onPress={() => { loginFirebase() }} 
+            >
               Entrar
             </TouchableOpacity>
-            <TouchableOpacity style={styles.secondaryButton} onPress={() => { actionLoginGoogle() }} >
+            
+            <TouchableOpacity 
+              style={styles.secondaryButton} 
+              onPress={() => { actionLoginGoogle() }} 
+            >
               Entrar com Google
             </TouchableOpacity>
           </ImageBackground>
