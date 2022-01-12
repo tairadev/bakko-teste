@@ -1,24 +1,26 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import firebase from '../firebaseConfig';
+import authentication from '../firebaseConfig';
+import { signOut } from 'firebase/auth';
 
-function Login() {
+function Logout() {
 
-    function logoutFirebase() {
-        firebase.auth().signOut().then(function() {
-          alert('Deslogado com sucesso!');
-        }).catch(function(error) {
-          alert('Falha: ', error)
-        })
-    }
+  const logoutUser = () => {
+    signOut(authentication)
+    .then((res) => {
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
 
-    logoutFirebase();
+  logoutUser();
 
-    return (
-        <View>
-            
-        </View>
-    )
+  return (
+    <View>
+      <Text>Teste 123</Text>
+    </View>
+  )
 }
 
-export default Login
+export default Logout

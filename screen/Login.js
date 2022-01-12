@@ -5,6 +5,12 @@ function Login() {
     return (
         <View>
             <Text>Login</Text>
+            <Text>Login</Text>
+            <Text>Login</Text>
+            <Text>Login</Text>
+            <Text>Login</Text>
+            <Text>Login</Text>
+            <Text>Login</Text>
         </View>
     )
 }

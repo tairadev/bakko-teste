@@ -1,71 +1,51 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, Image, TextInput } from 'react-native';
+import { 
+  StyleSheet, 
+  Text, 
+  View, 
+  TouchableOpacity, 
+  ImageBackground, 
+  Image, 
+  TextInput 
+} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native'
 import Tabs from './navigation/Tabs'
-import firebase from './firebaseConfig';
+import authentication from './firebaseConfig';
 import Background from './assets/login_background.png'
 import Cores from './constants/Cores'
+import { 
+  signInWithEmailAndPassword
+} from 'firebase/auth';
 
 export default function App() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loggedUser, setLoggedUser] = useState('');
+  const [loggedUser, setLoggedUser] = useState(false);
 
-  function registerFirebase() {
-    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      console.log(errorCode, errorMessage);
+  const loginFirebase = () => {
+    signInWithEmailAndPassword(authentication, email, password)
+    .then((res) => {
+      setLoggedUser(res);
     })
-  }
-
-  function loginFirebase() {
-    firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      console.log(errorCode, errorMessage);
+    .catch((res) => {
+      console.log(res);
     })
-  }
-
-  function logoutFirebase() {
-    firebase.auth().signOut().then(function() {
-      console.log('Deslogado com sucesso!');
-    }).catch(function(error) {
-      console.log('Falha: ', error)
-    })
-  }
-
-  const actionLoginGoogle = async () => {
-    if(!loggedUser) {
-      const provider = new firebase.auth.GoogleAuthProvider()
-      const result = await firebase.auth().signInWithPopup(provider);
-        
-      if(result.user) {
-        const { uid, displayName, photoURL } = result.user;
-    
-        setUser({
-          id: uid,
-          avatar: photoURL,
-          name: displayName
-        })
-      }
-    }
   }
 
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(function(user) {
-      if(user) {
-        setLoggedUser(user)
+    authentication.onAuthStateChanged(firebaseUser => {
+      if(firebaseUser) {
+        setLoggedUser(firebaseUser);
       } else {
         setLoggedUser(false)
       }
-    })
+    });
   }, [])
 
   return (
     <>
-      {!loggedUser &&
+      {loggedUser === false && 
         <View style={styles.container}>
           <ImageBackground 
             source={Background} 
@@ -94,21 +74,21 @@ export default function App() {
               style={styles.primaryButton} 
               onPress={() => { loginFirebase() }} 
             >
-              Entrar
+              <Text style={styles.primaryButtonText}>Entrar</Text>
             </TouchableOpacity>
             
             <TouchableOpacity 
               style={styles.secondaryButton} 
-              onPress={() => { actionLoginGoogle() }} 
+              onPress={() => { loginGoogle() }} 
             >
-              Entrar com Google
+              <Text style={styles.secondaryButtonText}>Entrar com Google</Text>
             </TouchableOpacity>
           </ImageBackground>
         </View>  
       }
-      {loggedUser &&
+      {loggedUser !== false && 
         <NavigationContainer>
-          <Tabs logout={logoutFirebase} />
+          <Tabs />
         </NavigationContainer>
       }
     </>
@@ -136,7 +116,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '75%',
-    height: 56,
+    height: 50,
     backgroundColor: '#0A0100',
     marginBottom: 15,
     borderRadius: 5,
@@ -147,38 +127,38 @@ const styles = StyleSheet.create({
     borderColor: Cores.primary
   },
   logo: {
-    width: 180,
-    height: 180,
+    width: 140,
+    height: 140,
     marginBottom: 30
   },
   primaryButton: {
     width: '75%',
     height: 50,
     borderRadius: 10,
-    color: Cores.white,
-    fontFamily: 'Arial',
-    fontWeight: 600,
-    letterSpacing: 1.5,
-    textTransform: 'uppercase',
     backgroundColor: Cores.primary,
-    textAlign: 'center',
     justifyContent: 'center',
     marginTop: 20,
-    fontSize: 16
   },
   secondaryButton: {
     width: '75%',
     height: 50,
     borderRadius: 10,
-    color: Cores.primary,
-    fontFamily: 'Arial',
-    fontWeight: 600,
-    letterSpacing: 1.5,
-    textTransform: 'uppercase',
     backgroundColor: Cores.white,
-    textAlign: 'center',
     justifyContent: 'center',
     marginTop: 20,
+  },
+  primaryButtonText: {
+    textAlign: 'center',
+    color: Cores.white,
+    letterSpacing: 1.5,
+    textTransform: 'uppercase',
+    fontSize: 16
+  },
+  secondaryButtonText: {
+    textAlign: 'center',
+    color: Cores.primary,
+    letterSpacing: 1.5,
+    textTransform: 'uppercase',
     fontSize: 16
   }
 });
